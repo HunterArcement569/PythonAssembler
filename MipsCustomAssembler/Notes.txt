@@ -1,0 +1,40 @@
+Developer Notes:
+
+The functions for the most part handle just like real mips instructions, however there are some constraints in this that
+are not present in MIPS or MARS. When you are placing register operands, always use a comma to delineate and not just a
+space.
+
+The database operation functions are as such:
+
+Database Connect (dbct) takes each a register to store the connection, cursor as well as the address of the file location
+of the database file (this is built through SQLite therefore is always a file and not a server)
+
+Database Close (dbcl) takes the connection and cursor parameters as registers
+
+Database Table/View Create (dbt) takes the connection and cursor as registers, then the address of the create
+table/view query
+
+Database Insert (dbi) takes the connection and cursor as registers, then the query address followed by the parameters
+used in the query after (will throw custom exception if there are too few/many or incorrect datatypes so check)
+
+Database Update (dbu) takes the connection and cursor as registers, then the query address followed by the parameters
+used in the query after (will throw custom exception if there are too few/many or incorrect datatypes so check)
+
+Database Delete (dbd) used to delete rows from the database (not drop a database or table, can use dbt for that)
+takes the connection and cursor as register, then the query address followed by the parameters used in the query
+after (will throw custom exception if there are too few/many or incorrect datatypes so check)
+
+Database Select (dbs) takes a register to store the number of rows returned, the cursor as a register, the query address
+followed by the parameters used in the query after (will throw custom exception if there are too few/many or incorrect datatypes
+so check)
+
+Database Iterate (dbit) used to iterate through the rows returned by a Database Select (dbs) instruction,
+takes the current row (in an address), the cursor as a register, followed by the correct number and type of registers of the
+attributes (ex. a float goes into a float register as a float, a string into a general register as an address, an int into a general register
+as an address (be aware it is saved as the address and not the actual value at that point)
+
+Also note there are functions in MIPS/MARS that are/were not implemented such as the double precision instructions (as a whole including
+not in syscall and if used will throw custom exceptions)
+
+The database operation functions will not work in MIPS/MARS and are programmed specific to this project for fun and
+in a style somewhat similar to how MIPS/MARS would handle it (though not perfect)
